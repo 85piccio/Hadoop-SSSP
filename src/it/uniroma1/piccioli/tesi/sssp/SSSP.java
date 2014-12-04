@@ -120,7 +120,7 @@ public class SSSP extends Configured implements Tool {
 		}
 
 		//TODO: presentazione risultati
-		FileSystem fs = FileSystem.get(conf);
+//		FileSystem fs = FileSystem.get(conf);
 //		fs.mo.moveFromLocalFile(in1, new Path(args[0]));
 		return 0;
 
