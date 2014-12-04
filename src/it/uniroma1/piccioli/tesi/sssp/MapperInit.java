@@ -1,4 +1,4 @@
-package it.uniroma1.piccioli.test.sssp;
+package it.uniroma1.piccioli.tesi.sssp;
 
 import java.io.IOException;
 

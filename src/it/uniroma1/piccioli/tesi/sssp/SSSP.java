@@ -1,4 +1,4 @@
-package it.uniroma1.piccioli.test.sssp;
+package it.uniroma1.piccioli.tesi.sssp;
 
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -12,7 +12,8 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
-import it.uniroma1.piccioli.test.sssp.STATE;
+
+import it.uniroma1.piccioli.tesi.sssp.STATE;
 
 public class SSSP extends Configured implements Tool {
 	public final static String SOURCE_INDEX = "KEEP_ABOVE";
