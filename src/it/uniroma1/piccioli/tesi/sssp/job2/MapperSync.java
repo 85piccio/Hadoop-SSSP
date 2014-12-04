@@ -1,4 +1,4 @@
-package it.uniroma1.piccioli.tesi.sssp;
+package it.uniroma1.piccioli.tesi.sssp.job2;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package it.uniroma1.piccioli.tesi.sssp;
+package it.uniroma1.piccioli.tesi.sssp.app;
 
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -13,7 +13,10 @@ import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
-import it.uniroma1.piccioli.tesi.sssp.STATE;
+import it.uniroma1.piccioli.tesi.sssp.job1.MapperInit;
+import it.uniroma1.piccioli.tesi.sssp.job1.ReducerInit;
+import it.uniroma1.piccioli.tesi.sssp.job2.MapperSync;
+import it.uniroma1.piccioli.tesi.sssp.job2.ReducerSync;
 
 public class SSSP extends Configured implements Tool {
 	public final static String SOURCE_INDEX = "KEEP_ABOVE";

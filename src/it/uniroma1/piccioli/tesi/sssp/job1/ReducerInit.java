@@ -1,4 +1,6 @@
-package it.uniroma1.piccioli.tesi.sssp;
+package it.uniroma1.piccioli.tesi.sssp.job1;
+
+import it.uniroma1.piccioli.tesi.sssp.app.STATE;
 
 import java.io.IOException;
 import java.util.ArrayList;
