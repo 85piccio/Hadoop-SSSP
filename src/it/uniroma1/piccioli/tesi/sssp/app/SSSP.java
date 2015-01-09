@@ -19,13 +19,14 @@ import it.uniroma1.piccioli.tesi.sssp.job2.MapperSync;
 import it.uniroma1.piccioli.tesi.sssp.job2.ReducerSync;
 
 public class SSSP extends Configured implements Tool {
-	public final static String SOURCE_INDEX = "KEEP_ABOVE";
+	public final static String SOURCE_INDEX = "SOURCE_INDEX";
 	public final static String VEDIT = "VEDIT";
 
 	public int run(String[] args) throws Exception {
 
 		Configuration conf = this.getConf();
-		long source = 0;
+//		long source = 0;
+		long source = 21651598;
 		if (args.length > 2) {
 			source = Long.parseLong(args[2]);
 		}
@@ -43,6 +44,7 @@ public class SSSP extends Configured implements Tool {
 		boolean justOne = true;
 //		int maxIter = 10;
 		long prev = 1;
+		int nn = 0;
 		while (hasUpdates /*&& (maxIter > 1)*/) {
 
 			//reset cartelle di output
@@ -58,7 +60,7 @@ public class SSSP extends Configured implements Tool {
 			 * */
 			Job jobInit = Job.getInstance(conf);
 
-			jobInit.setJobName("SSCP-step1");
+			jobInit.setJobName("SSCP-step-"+ nn);
 
 			jobInit.setMapperClass(MapperInit.class);
 			jobInit.setReducerClass(ReducerInit.class);
@@ -86,7 +88,7 @@ public class SSSP extends Configured implements Tool {
 			 * */
 
 			Job jobSync = Job.getInstance(conf);
-			jobSync.setJobName("SSSP-sync");
+			jobSync.setJobName("SSSP-sync-"+ nn);
 
 
 			jobSync.setJarByClass(SSSP.class);
@@ -118,6 +120,9 @@ public class SSSP extends Configured implements Tool {
             long diffPrev = updates - prev;
             hasUpdates = (diffPrev != 0);
             prev = updates;
+            
+            System.out.println("Round numero:" + nn);
+            nn++;
             
 
 		}

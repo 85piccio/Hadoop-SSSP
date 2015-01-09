@@ -7,16 +7,19 @@ import org.apache.hadoop.mapreduce.Mapper;
 
 public class MapperInit extends Mapper<Text, Text, Text, Text> {
 
+
+	public final static String SOURCE_INDEX = "SOURCE_INDEX";
+	
 	@Override
 	protected void map(Text key, Text value, Context context) throws IOException, InterruptedException {
 
-		long source = context.getConfiguration().getLong("SOURCE_INDEX", 0);
+		long source = context.getConfiguration().getLong(SOURCE_INDEX, 0);
 
 		if (key.toString().contains("-") && value.toString().contains("-")) {//valori gia inizializzati
 
 			context.write(value, key);
-
-		} else {//1st iteration - inizializzo valori input
+			
+		} else {//1st iteration - inizializzo valori in input
 
 			Text k = new Text(key.toString() + "-" + Long.MAX_VALUE);// FORMATO: "id-valore"
 			Text v = new Text(value.toString() + "-" + Long.MAX_VALUE);
