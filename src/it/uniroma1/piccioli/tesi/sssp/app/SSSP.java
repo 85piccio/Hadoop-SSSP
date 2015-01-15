@@ -13,10 +13,10 @@ import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
-import it.uniroma1.piccioli.tesi.sssp.job1.MapperInit;
-import it.uniroma1.piccioli.tesi.sssp.job1.ReducerInit;
-import it.uniroma1.piccioli.tesi.sssp.job2.MapperSync;
-import it.uniroma1.piccioli.tesi.sssp.job2.ReducerSync;
+import it.uniroma1.piccioli.tesi.sssp.spread.MapperSpread;
+import it.uniroma1.piccioli.tesi.sssp.spread.ReducerSpread;
+import it.uniroma1.piccioli.tesi.sssp.sync.MapperSync;
+import it.uniroma1.piccioli.tesi.sssp.sync.ReducerSync;
 
 public class SSSP extends Configured implements Tool {
 	public final static String SOURCE_INDEX = "SOURCE_INDEX";
@@ -34,10 +34,10 @@ public class SSSP extends Configured implements Tool {
 		conf.setBoolean(VEDIT, false);
 
 		// path job1
-		Path in1 = new Path(args[0]);
-		Path outTmp = new Path("/result_job");
-		Path outSync = new Path("/result_job_sync");
-		Path outSync2 = new Path("/result_job_sync2");
+		Path inputIniziale = new Path(args[0]);
+		Path outputFinale = new Path(args[1]);
+		Path path1 = new Path("/result_job_sync");
+		Path path2 = new Path("/result_job_sync2");
 
 		// per entrare
 		boolean hasUpdates = true;
@@ -49,8 +49,8 @@ public class SSSP extends Configured implements Tool {
 
 			//reset cartelle di output
 			FileSystem fs = FileSystem.get(conf);			
-			fs.delete(outTmp, true);
-			fs.delete(outSync, true);
+			fs.delete(outputFinale, true);
+			fs.delete(path1, true);
 
 			/*
 			 * Primo Job 
@@ -62,15 +62,15 @@ public class SSSP extends Configured implements Tool {
 
 			jobInit.setJobName("SSCP-step-"+ nn);
 
-			jobInit.setMapperClass(MapperInit.class);
-			jobInit.setReducerClass(ReducerInit.class);
+			jobInit.setMapperClass(MapperSpread.class);
+			jobInit.setReducerClass(ReducerSpread.class);
 
 			jobInit.setJarByClass(SSSP.class);
 
 			jobInit.setInputFormatClass(KeyValueTextInputFormat.class);
 			jobInit.setOutputFormatClass(TextOutputFormat.class);
-			FileInputFormat.addInputPath(jobInit, in1);
-			FileOutputFormat.setOutputPath(jobInit, outTmp);
+			FileInputFormat.addInputPath(jobInit, inputIniziale);
+			FileOutputFormat.setOutputPath(jobInit, outputFinale);
 
 			jobInit.setMapOutputKeyClass(Text.class);
 			jobInit.setMapOutputValueClass(Text.class);
@@ -93,7 +93,7 @@ public class SSSP extends Configured implements Tool {
 
 			jobSync.setJarByClass(SSSP.class);
 
-			FileInputFormat.addInputPath(jobSync, outTmp);
+			FileInputFormat.addInputPath(jobSync, outputFinale);
 			jobSync.setInputFormatClass(KeyValueTextInputFormat.class);
 
 			jobSync.setMapperClass(MapperSync.class);
@@ -102,19 +102,19 @@ public class SSSP extends Configured implements Tool {
 			jobSync.setOutputKeyClass(Text.class);
 			jobSync.setOutputValueClass(Text.class);
 
-			FileOutputFormat.setOutputPath(jobSync, outSync);
+			FileOutputFormat.setOutputPath(jobSync, path1);
 			jobSync.setOutputFormatClass(TextOutputFormat.class);
 
 			jobSync.waitForCompletion(true);
 
 			//Inverto path input con path output per iterazione successiva
 			if(justOne){
-				in1 =outSync2;//preserva input originale 
+				inputIniziale =path2;//per preservare input originale 
 				justOne=false;
 			}
-			Path a = outSync;
-			outSync = in1;
-			in1 = a;
+			Path tmpSwitch = path1;
+			path1 = inputIniziale;
+			inputIniziale = tmpSwitch;
 			
             // Verifico che ci sono stati update altrimeni termino iterazioni
             long diffPrev = updates - prev;
@@ -122,25 +122,20 @@ public class SSSP extends Configured implements Tool {
             prev = updates;
             
             System.out.println("Round numero:" + nn);
-            nn++;
-            
+            nn++;           
 
 		}
 
-		//TODO: presentazione risultati
-//		FileSystem fs = FileSystem.get(conf);
-//		fs.mo.moveFromLocalFile(in1, new Path(args[0]));
+		//"sposto" in cartella output e elimino cartelle temporanee
+		FileSystem fs = FileSystem.get(conf);
+		fs.rename(inputIniziale, outputFinale);		
+		fs.delete(path2, true);
+		fs.delete(path1, true);
+		
 		return 0;
 
 	}
-//
-//	private void swap(Path p1, Path p2) {
-//		Path a;
-//		a = p1;
-//		p1 = p2;
-//		p2 = p1;
-//
-//	}
+
 
 	public static void main(String[] args) throws Exception {
 		if (args.length < 2) {

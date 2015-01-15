@@ -1,4 +1,4 @@
-package it.uniroma1.piccioli.tesi.sssp.job1;
+package it.uniroma1.piccioli.tesi.sssp.spread;
 
 import it.uniroma1.piccioli.tesi.sssp.app.STATE;
 
@@ -9,7 +9,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
 
-public class ReducerInit extends Reducer<Text, Text, Text, Text> {
+public class ReducerSpread extends Reducer<Text, Text, Text, Text> {
 
 
 	@Override

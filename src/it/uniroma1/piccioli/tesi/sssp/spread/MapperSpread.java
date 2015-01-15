@@ -1,11 +1,11 @@
-package it.uniroma1.piccioli.tesi.sssp.job1;
+package it.uniroma1.piccioli.tesi.sssp.spread;
 
 import java.io.IOException;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
-public class MapperInit extends Mapper<Text, Text, Text, Text> {
+public class MapperSpread extends Mapper<Text, Text, Text, Text> {
 
 
 	public final static String SOURCE_INDEX = "SOURCE_INDEX";
