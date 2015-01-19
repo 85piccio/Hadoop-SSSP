@@ -45,10 +45,11 @@ public class SSSP extends Configured implements Tool {
 		// per entrare
 		boolean hasUpdates = true;
 		boolean justOne = true;
-		// int maxIter = 10;
+		
+		int maxIter = 3;//limito risorse
 		long prev = 1;
 		int nn = 0;
-		while (hasUpdates /* && (maxIter > 1) */) {
+		while (hasUpdates  && (maxIter > 0)) {
 
 			Path outtmp = new Path("/result_outtmp");
 
@@ -129,6 +130,7 @@ public class SSSP extends Configured implements Tool {
 
 			System.out.println("Round numero:" + nn);
 			nn++;
+			maxIter--;
 
 		}
 
