@@ -28,9 +28,13 @@ public class SSSP extends Configured implements Tool {
 
 		Configuration conf = this.getConf();
 		String source = "0";
+		int maxIter = Integer.MAX_VALUE;//limito risorse
 		if (args.length > 2) {
 //			source = Long.parseLong(args[2]);
 			source = args[2];
+			if(args.length > 3){
+				maxIter = Integer.parseInt(args[3]);
+			}
 		}
 		//conf.setLong(SOURCE_INDEX, source);
 		conf.setStrings(SOURCE_INDEX, source);
@@ -46,7 +50,6 @@ public class SSSP extends Configured implements Tool {
 		boolean hasUpdates = true;
 		boolean justOne = true;
 		
-		int maxIter = 3;//limito risorse
 		long prev = 1;
 		int nn = 0;
 		while (hasUpdates  && (maxIter > 0)) {
