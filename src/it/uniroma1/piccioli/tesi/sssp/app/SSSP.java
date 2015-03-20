@@ -27,6 +27,11 @@ public class SSSP extends Configured implements Tool {
 	public int run(String[] args) throws Exception {
 
 		Configuration conf = this.getConf();
+//		conf.setBoolean("mapred.task.profile", true);
+//		conf.set("mapred.task.profile.params", "-agentlib:hprof=cpu=samples," +
+//		"heap=sites,depth=6,force=n,thread=y,verbose=n,file=%s");
+//		conf.set("mapred.task.profile.maps", "0-2");
+//		conf.set("mapred.task.profile.reduces", ""); // no reduces
 		String source = "0";
 		int maxIter = Integer.MAX_VALUE;//limito risorse
 		if (args.length > 2) {
